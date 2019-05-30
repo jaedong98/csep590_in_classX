@@ -1,0 +1,50 @@
+
+plugins {
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
+
+    // Checker Framework pluggable type-checking
+    id 'org.checkerframework' version '0.3.0'
+
+    // SpotBugs, a heuristic bug-finder
+    id "com.github.spotbugs" version "2.0.0"
+}
+
+if (!project.hasProperty("useCheckerFramework")) {
+    ext.useCheckerFramework = "false"
+}
+if ("true".equals(project.ext.useCheckerFramework)) {
+    apply plugin: 'org.checkerframework'
+}
+
+def checkerFrameworkVersion = "2.8.1"
+
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+dependencies {
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compileOnly 'com.google.code.findbugs:annotations:3.0.1'
+    implementation 'org.checkerframework:checker-qual:2.8.1'
+
+    if ("true".equals(project.ext.useCheckerFramework)) {
+        checkerFramework 'org.checkerframework:checker:' + checkerFrameworkVersion
+        checkerFramework 'org.checkerframework:jdk8:' + checkerFrameworkVersion
+        checkerFramework 'org.checkerframework:checker-qual:' + checkerFrameworkVersion
+    }
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
+
+if ("true".equals(project.ext.useCheckerFramework)) {
+    checkerFramework {
+        checkers = [
+                'org.checkerframework.checker.nullness.NullnessChecker'
+        ]
+    }
+}
