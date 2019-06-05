@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Collections;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.FileUtils;
@@ -457,6 +458,17 @@ public class FileAlterationObserver implements Serializable {
         builder.append(listeners.size());
         builder.append("]");
         return builder.toString();
+    }
+
+    public static void callAllMethodsWithNull(FileAlterationObserver testSubject, FileEntry f1, File f2) {
+	testSubject.removeListener(null);
+	testSubject.addListener(null);
+	testSubject.addListeners(Collections.singletonList(null));
+	new FileAlterationObserver(f1, null, null);
+	new FileAlterationObserver(f2, null);
+	new FileAlterationObserver(f2, null, null);
+	new FileAlterationObserver("dir", null);
+	new FileAlterationObserver("dir", null, null);
     }
 }
 
