@@ -148,7 +148,7 @@ public class FileAlterationObserver implements Serializable {
      * @param directoryName the name of the directory to observe
      * @param fileFilter The file filter or null if none
      */
-    public FileAlterationObserver(final String directoryName, final FileFilter fileFilter) {
+    public FileAlterationObserver(final String directoryName, final @Nullable FileFilter fileFilter) {
         this(new File(directoryName), fileFilter);
     }
 
@@ -160,8 +160,8 @@ public class FileAlterationObserver implements Serializable {
      * @param fileFilter The file filter or null if none
      * @param caseSensitivity  what case sensitivity to use comparing file names, null means system sensitive
      */
-    public FileAlterationObserver(final String directoryName, final FileFilter fileFilter,
-                                  final IOCase caseSensitivity) {
+    public FileAlterationObserver(final String directoryName, final @Nullable FileFilter fileFilter,
+                                  final @Nullable IOCase caseSensitivity) {
         this(new File(directoryName), fileFilter, caseSensitivity);
     }
 
@@ -247,9 +247,11 @@ public class FileAlterationObserver implements Serializable {
      *
      * @param listeners the file system listeners to add, some of which may be null
      */
-    public void addListeners(final List<FileAlterationListener> listeners) {
+    public void addListeners(final List<@Nullable FileAlterationListener> listeners) {
         for (FileAlterationListener listener : listeners) {
-            listeners.add(listener);
+            if (listener != null) {
+                this.listeners.add(listener);
+            }
         }
     }
 
@@ -258,8 +260,10 @@ public class FileAlterationObserver implements Serializable {
      *
      * @param listener The file system listener, or null
      */
-    public void addListener(final FileAlterationListener listener) {
-        listeners.add(listener);
+    public void addListener(final @Nullable FileAlterationListener listener) {
+        if (listener != null) {
+            listeners.add(listener);
+        }
     }
 
     /**
@@ -267,7 +271,7 @@ public class FileAlterationObserver implements Serializable {
      *
      * @param listener The file system listener, or null
      */
-    public void removeListener(final FileAlterationListener listener) {
+    public void removeListener(final @Nullable FileAlterationListener listener) {
         if (listener != null) {
             while (listeners.remove(listener)) {
             }
