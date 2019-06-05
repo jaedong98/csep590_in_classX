@@ -128,7 +128,7 @@ public class FileAlterationObserver implements Serializable {
     private final List<FileAlterationListener> listeners = new CopyOnWriteArrayList<>();
 
     private final FileEntry rootEntry;
-    private final FileFilter fileFilter;
+    private final @Nullable FileFilter fileFilter;
     private final Comparator<File> comparator;
 
     private static final FileEntry[] EMPTY_ENTRIES = new FileEntry[0];
@@ -180,7 +180,7 @@ public class FileAlterationObserver implements Serializable {
      * @param directory the directory to observe
      * @param fileFilter The file filter or null if none
      */
-    public FileAlterationObserver(final File directory, final FileFilter fileFilter) {
+    public FileAlterationObserver(final File directory, final @Nullable FileFilter fileFilter) {
         this(directory, fileFilter, null);
     }
 
@@ -192,7 +192,7 @@ public class FileAlterationObserver implements Serializable {
      * @param fileFilter The file filter or null if none
      * @param caseSensitivity  what case sensitivity to use comparing file names, null means system sensitive
      */
-    public FileAlterationObserver(final File directory, final FileFilter fileFilter, final IOCase caseSensitivity) {
+    public FileAlterationObserver(final File directory, final @Nullable FileFilter fileFilter, final @Nullable IOCase caseSensitivity) {
         this(new FileEntry(directory), fileFilter, caseSensitivity);
     }
 
@@ -204,8 +204,8 @@ public class FileAlterationObserver implements Serializable {
      * @param fileFilter The file filter or null if none
      * @param caseSensitivity  what case sensitivity to use comparing file names, null means system sensitive
      */
-    protected FileAlterationObserver(final FileEntry rootEntry, final FileFilter fileFilter,
-                                     final IOCase caseSensitivity) {
+    protected FileAlterationObserver(final FileEntry rootEntry, final @Nullable FileFilter fileFilter,
+                                     final @Nullable IOCase caseSensitivity) {
         if (rootEntry == null) {
             throw new IllegalArgumentException("Root entry is missing");
         }
@@ -238,7 +238,7 @@ public class FileAlterationObserver implements Serializable {
      * @return the fileFilter
      * @since 2.1
      */
-    public FileFilter getFileFilter() {
+    public @Nullable FileFilter getFileFilter() {
         return fileFilter;
     }
 
